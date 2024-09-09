@@ -1,4 +1,4 @@
-package advert_api
+package tag_api
 
 import (
 	"GVB_server/models"
@@ -15,7 +15,7 @@ func (TagApi) TagListView(c *gin.Context) {
 	}
 	list, count, _ := common.ComList(models.TagModel{}, common.Option{
 		PageInfo: cr,
-		Debug:    false,
 	})
+	// 需要展示这个标签下文章的数量
 	res.OkWithList(list, count, c)
 }

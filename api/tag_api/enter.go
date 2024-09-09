@@ -1,4 +1,4 @@
-package advert_api
+package tag_api
 
-type AdvertApi struct {
+type TagApi struct {
 }

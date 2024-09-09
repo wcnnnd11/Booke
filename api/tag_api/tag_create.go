@@ -1,4 +1,4 @@
-package advert_api
+package tag_api
 
 import (
 	"GVB_server/global"
@@ -11,7 +11,7 @@ type TagRequest struct {
 	Title string `json:"title" binding:"required" msg:"请输入标题" structs:"title"` // 显示的标题
 }
 
-func (TagApi) AdvertCreateView(c *gin.Context) {
+func (TagApi) TagCreateView(c *gin.Context) {
 	var cr TagRequest
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {
@@ -22,11 +22,11 @@ func (TagApi) AdvertCreateView(c *gin.Context) {
 	var tag models.TagModel
 	err = global.DB.Take(&tag, "title = ?", cr.Title).Error
 	if err == nil {
-		res.FailWithMessage("该广告已存在", c)
+		res.FailWithMessage("该标签已存在", c)
 		return
 	}
 
-	err = global.DB.Create(&models.AdvertModel{
+	err = global.DB.Create(&models.TagModel{
 		Title: cr.Title,
 	}).Error
 

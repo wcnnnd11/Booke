@@ -1,4 +1,4 @@
-package advert_api
+package tag_api
 
 import (
 	"GVB_server/global"
@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (TagApi) AdvertRemoveView(c *gin.Context) {
+func (TagApi) TagRemoveView(c *gin.Context) {
 	var cr models.RemoveRequest
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {
@@ -16,13 +16,14 @@ func (TagApi) AdvertRemoveView(c *gin.Context) {
 		return
 	}
 
-	var advertList []models.AdvertModel
-	count := global.DB.Find(&advertList, cr.IDList).RowsAffected
+	var TagList []models.TagModel
+	count := global.DB.Find(&TagList, cr.IDList).RowsAffected
 	if count == 0 {
 		res.FailWithMessage("标签不存在", c)
 		return
 	}
-	global.DB.Delete(&advertList)
+	// 如果这个标签下有文章，怎么办
+	global.DB.Delete(&TagList)
 	res.OkWithMessage(fmt.Sprintf("共删除 %d 个标签", count), c)
 
 }

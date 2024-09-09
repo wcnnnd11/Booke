@@ -2,11 +2,11 @@ package routers
 
 import "GVB_server/api"
 
-func (router RouterGroup) AdvertRouter() {
-	app := api.ApiGroupApp.AdvertApi
-	router.POST("adverts", app.AdvertCreateView)
-	router.GET("adverts", app.AdvertListView)
-	router.PUT("adverts/:id", app.AdvertUpdateView)
-	router.DELETE("adverts", app.AdvertRemoveView)
+func (router RouterGroup) TagRouter() {
+	app := api.ApiGroupApp.TagApi
+	router.POST("tags", app.TagCreateView)
+	router.GET("tags", app.TagListView)
+	router.PUT("tags/:id", app.TagUpdateView)
+	router.DELETE("tags", app.TagRemoveView)
 
 }

@@ -1,4 +1,4 @@
-package advert_api
+package tag_api
 
 import (
 	"GVB_server/global"
