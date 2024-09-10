@@ -4,6 +4,7 @@ import (
 	"GVB_server/api/advert_api"
 	"GVB_server/api/images_api"
 	"GVB_server/api/menu_api"
+	"GVB_server/api/message_api"
 	"GVB_server/api/settings_api"
 	"GVB_server/api/tag_api"
 	"GVB_server/api/user_api"
@@ -16,6 +17,7 @@ type ApiGroup struct {
 	MenuApi     menu_api.MenuApi
 	UserAPi     user_api.UserApi
 	TagApi      tag_api.TagApi
+	MessageApi  message_api.MessageApi
 }
 
 var ApiGroupApp = new(ApiGroup)

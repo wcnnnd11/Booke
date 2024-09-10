@@ -31,8 +31,18 @@ func ComList[T any](model T, option Option) (list []T, count int64, err error) {
 		offset = 0
 	}
 
-	//Limit有问题，应该是option.Limit,但是option.Limit=0,所以暂时用1代替
-	err = query.Limit(option.Limit).Offset(offset).Order(option.Sort).Find(&list).Error
+	/*
+		Limit有问题，应该是option.Limit,但是option.Limit=0,解决方法推荐2种
+		 判断limit=0的情况，并重新赋值为1
+		 或者在每次查询的时候手动设置limit的值
+		 不推荐的方法：更换Gorm的版本至 1.24.5
+	*/
+	// 判断limit = 0 的解决方法
+	pageLimit := option.Limit
+	if pageLimit == 0 {
+		pageLimit = -1
+	}
+	err = query.Limit(pageLimit).Offset(offset).Order(option.Sort).Find(&list).Error
 
 	return list, count, err
 }
