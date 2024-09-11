@@ -20,7 +20,7 @@ func (TagApi) TagUpdateView(c *gin.Context) {
 	var tag models.TagModel
 	err = global.DB.Take(&tag, id).Error
 	if err != nil {
-		res.FailWithMessage("广告不存在", c)
+		res.FailWithMessage("标签不存在", c)
 		return
 	}
 	// 结构体转map的第三方包
