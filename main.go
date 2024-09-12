@@ -24,6 +24,8 @@ func main() {
 	//fmt.Println(global.DB)
 	//连接redis
 	global.Redis = core.ConnectRedis()
+	// 连接es
+	global.ESClient = core.EsConnect()
 
 	option := flag.Parse()
 	if flag.IsWebStop(option) {

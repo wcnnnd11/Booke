@@ -1,8 +1,8 @@
-package es操作
+package main
 
 import (
+	"GVB_server/global"
 	"context"
-	"github.com/qiniu/go-sdk/v7/client"
 	"github.com/sirupsen/logrus"
 )
 
@@ -24,7 +24,6 @@ func (DemoModel) Mapping() string {
       },
       "created_at":{
         "type": "date",
-        "null_value": "null",
         "format": "[yyyy-MM-dd HH:mm:ss]"
       }
     }
@@ -33,13 +32,11 @@ func (DemoModel) Mapping() string {
 `
 }
 
-// IndexExists 索引是否存在
-func (demo DemoModel) IndexExists() bool {
-	exists, err := client.
-		IndexExists(demo.Index()).
-		Do(context.Background())
+// IndexExist 查询索引是否存在
+func (demo DemoModel) IndexExist() bool {
+	exists, err := client.IndexExists(demo.Index()).Do(context.Background())
 	if err != nil {
-		logrus.Error(err.Error())
+		global.Log.Error(err.Error())
 		return exists
 	}
 	return exists
@@ -47,12 +44,12 @@ func (demo DemoModel) IndexExists() bool {
 
 // CreateIndex 创建索引
 func (demo DemoModel) CreateIndex() error {
-	if demo.IndexExists() {
+	if demo.IndexExist() {
 		// 有索引
 		demo.RemoveIndex()
 	}
-	// 没有索引
-	// 创建索引
+	// 无索引
+	// 就创建索引
 	createIndex, err := client.
 		CreateIndex(demo.Index()).
 		BodyString(demo.Mapping()).
@@ -63,7 +60,7 @@ func (demo DemoModel) CreateIndex() error {
 		return err
 	}
 	if !createIndex.Acknowledged {
-		logrus.Error("创建失败")
+		logrus.Error("创建索引")
 		return err
 	}
 	logrus.Infof("索引 %s 创建成功", demo.Index())

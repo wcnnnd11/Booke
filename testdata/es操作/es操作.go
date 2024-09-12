@@ -1,27 +1,36 @@
-package es操作
+package main
 
 import (
+	"GVB_server/core"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/olivere/elastic/v7"
-	"github.com/qiniu/go-sdk/v7/client"
 	"github.com/sirupsen/logrus"
 )
 
-// EsConnect 连接es
+var client *elastic.Client
+
 func EsConnect() *elastic.Client {
 	var err error
 	sniffOpt := elastic.SetSniff(false)
 	host := "http://127.0.0.1:9200"
+
 	c, err := elastic.NewClient(
 		elastic.SetURL(host),
 		sniffOpt,
 		elastic.SetBasicAuth("", ""),
 	)
 	if err != nil {
-		logrus.Fatalf("es连接失败 %s", err.Error())
+		logrus.Fatalf("es连接失败%s", err.Error())
 	}
 	return c
+}
+
+func init() {
+	core.InitConf()
+	core.InitLogger()
+	client = EsConnect()
 }
 
 type DemoModel struct {
@@ -35,20 +44,18 @@ func (DemoModel) Index() string {
 	return "demo_index"
 }
 
-// Create 创建
+// Create 增加索引功能
 func Create(data *DemoModel) (err error) {
-	indexResponse, err := client.Index().
-		Index(data.Index()).
-		BodyJson(data).Do(context.Background())
+	IndexResponse, err := client.Index().Index(data.Index()).BodyJson(data).Do(context.Background())
 	if err != nil {
 		logrus.Error(err.Error())
 		return err
 	}
-	data.ID = indexResponse.Id
+	data.ID = IndexResponse.Id
 	return nil
 }
 
-// FindList 列表查询
+// FindList 查看
 func FindList(key string, page, limit int) (demoList []DemoModel, count int) {
 	boolSearch := elastic.NewBoolQuery()
 	from := page
@@ -166,4 +173,15 @@ func Remove(idList []string) (count int, err error) {
 	}
 	res, err := bulkService.Do(context.Background())
 	return len(res.Succeeded()), err
+}
+
+func main() {
+	//DemoModel{}.CreateIndex()
+	//Create(&DemoModel{Title: "Golang框架学习", UserID: 2, CreatedAt: time.Now().Format("2006-01-02 15:04:05")})
+	list, count := FindList("", 1, 10)
+	fmt.Println(list, count)
+	//FindSourceList("python", 1, 10) // 搜索似乎失效了
+	//Update("2NFx5ZEBwvxzjfHfYr50", &DemoModel{Title: "python学习来"})
+	//count, err := Remove([]string{"2dEg5pEBwvxzjfHf5L7t", "2tEh5pEBwvxzjfHfYr5J"})
+	//fmt.Println(count, err)
 }

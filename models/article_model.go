@@ -1,7 +1,10 @@
 package models
 
 import (
+	"GVB_server/global"
 	"GVB_server/models/ctype"
+	"context"
+	"github.com/sirupsen/logrus"
 )
 
 type ArticleModel struct {
@@ -33,142 +36,138 @@ type ArticleModel struct {
 	Tags ctype.Array `json:"tags" structs:"tags"` // 文章标签
 }
 
-//func (ArticleModel) Index() string {
-//	return "article_index"
-//}
-//
-//func (ArticleModel) Mapping() string {
-//	return `
-//{
-//  "settings": {
-//    "index":{
-//      "max_result_window": "100000"
-//    }
-//  },
-//  "mappings": {
-//    "properties": {
-//      "title": {
-//        "type": "text"
-//      },
-//      "keyword": {
-//        "type": "keyword"
-//      },
-//      "abstract": {
-//        "type": "text"
-//      },
-//      "content": {
-//        "type": "text"
-//      },
-//      "look_count": {
-//        "type": "integer"
-//      },
-//      "comment_count": {
-//        "type": "integer"
-//      },
-//      "digg_count": {
-//        "type": "integer"
-//      },
-//      "collects_count": {
-//        "type": "integer"
-//      },
-//      "user_id": {
-//        "type": "integer"
-//      },
-//      "user_nick_name": {
-//        "type": "keyword"
-//      },
-//      "user_avatar": {
-//        "type": "keyword"
-//      },
-//      "category": {
-//        "type": "keyword"
-//      },
-//      "source": {
-//        "type": "keyword"
-//      },
-//      "link": {
-//        "type": "keyword"
-//      },
-//      "banner_id": {
-//        "type": "integer"
-//      },
-//      "banner_url": {
-//        "type": "keyword"
-//      },
-//      "tags": {
-//        "type": "keyword"
-//      },
-//      "created_at":{
-//        "type": "date",
-//        "null_value": "null",
-//        "format": "[yyyy-MM-dd HH:mm:ss]"
-//      },
-//      "updated_at":{
-//        "type": "date",
-//        "null_value": "null",
-//        "format": "[yyyy-MM-dd HH:mm:ss]"
-//      }
-//    }
-//  }
-//}
-//`
-//}
-//
-//// IndexExists 索引是否存在
-//func (a ArticleModel) IndexExists() bool {
-//	exists, err := global.ESClient.
-//		IndexExists(a.Index()).
-//		Do(context.Background())
-//	if err != nil {
-//		logrus.Error(err.Error())
-//		return exists
-//	}
-//	return exists
-//}
-//
-//// CreateIndex 创建索引
-//func (a ArticleModel) CreateIndex() error {
-//	if a.IndexExists() {
-//		// 有索引
-//		a.RemoveIndex()
-//	}
-//	// 没有索引
-//	// 创建索引
-//	createIndex, err := global.ESClient.
-//		CreateIndex(a.Index()).
-//		BodyString(a.Mapping()).
-//		Do(context.Background())
-//	if err != nil {
-//		logrus.Error("创建索引失败")
-//		logrus.Error(err.Error())
-//		return err
-//	}
-//	if !createIndex.Acknowledged {
-//		logrus.Error("创建失败")
-//		return err
-//	}
-//	logrus.Infof("索引 %s 创建成功", a.Index())
-//	return nil
-//}
-//
-//// RemoveIndex 删除索引
-//func (a ArticleModel) RemoveIndex() error {
-//	logrus.Info("索引存在，删除索引")
-//	// 删除索引
-//	indexDelete, err := global.ESClient.DeleteIndex(a.Index()).Do(context.Background())
-//	if err != nil {
-//		logrus.Error("删除索引失败")
-//		logrus.Error(err.Error())
-//		return err
-//	}
-//	if !indexDelete.Acknowledged {
-//		logrus.Error("删除索引失败")
-//		return err
-//	}
-//	logrus.Info("索引删除成功")
-//	return nil
-//}
-//
+func (ArticleModel) Index() string {
+	return "article_index"
+}
+
+func (ArticleModel) Mapping() string {
+	return `
+{
+ "settings": {
+   "index":{
+     "max_result_window": "100000"
+   }
+ },
+ "mappings": {
+   "properties": {
+     "title": {
+       "type": "text"
+     },
+     "keyword": {
+       "type": "keyword"
+     },
+     "abstract": {
+       "type": "text"
+     },
+     "content": {
+       "type": "text"
+     },
+     "look_count": {
+       "type": "integer"
+     },
+     "comment_count": {
+       "type": "integer"
+     },
+     "digg_count": {
+       "type": "integer"
+     },
+     "collects_count": {
+       "type": "integer"
+     },
+     "user_id": {
+       "type": "integer"
+     },
+     "user_nick_name": {
+       "type": "keyword"
+     },
+     "user_avatar": {
+       "type": "keyword"
+     },
+     "category": {
+       "type": "keyword"
+     },
+     "source": {
+       "type": "keyword"
+     },
+     "link": {
+       "type": "keyword"
+     },
+     "banner_id": {
+       "type": "integer"
+     },
+     "banner_url": {
+       "type": "keyword"
+     },
+     "tags": {
+       "type": "keyword"
+     },
+     "created_at":{
+       "type": "date",
+       "format": "[yyyy-MM-dd HH:mm:ss]"
+     },
+     "updated_at":{
+       "type": "date",
+       "format": "[yyyy-MM-dd HH:mm:ss]"
+     }
+   }
+ }
+}
+`
+}
+
+// IndexExist 查询索引是否存在
+func (a ArticleModel) IndexExist() bool {
+	exists, err := global.ESClient.IndexExists(a.Index()).Do(context.Background())
+	if err != nil {
+		global.Log.Error(err.Error())
+		return exists
+	}
+	return exists
+}
+
+// CreateIndex 创建索引
+func (a ArticleModel) CreateIndex() error {
+	if a.IndexExist() {
+		// 有索引
+		a.RemoveIndex()
+	}
+	// 无索引
+	// 就创建索引
+	createIndex, err := global.ESClient.
+		CreateIndex(a.Index()).
+		BodyString(a.Mapping()).
+		Do(context.Background())
+	if err != nil {
+		logrus.Error("创建索引失败")
+		logrus.Error(err.Error())
+		return err
+	}
+	if !createIndex.Acknowledged {
+		logrus.Error("创建索引")
+		return err
+	}
+	logrus.Infof("索引 %s 创建成功", a.Index())
+	return nil
+}
+
+// RemoveIndex 删除索引
+func (a ArticleModel) RemoveIndex() error {
+	logrus.Info("索引存在，删除索引")
+	// 删除索引
+	indexDelete, err := global.ESClient.DeleteIndex(a.Index()).Do(context.Background())
+	if err != nil {
+		logrus.Error("删除索引失败")
+		logrus.Error(err.Error())
+		return err
+	}
+	if !indexDelete.Acknowledged {
+		logrus.Error("删除索引失败")
+		return err
+	}
+	logrus.Info("索引删除成功")
+	return nil
+}
+
 //// Create 添加的方法
 //func (a *ArticleModel) Create() (err error) {
 //	indexResponse, err := global.ESClient.Index().
