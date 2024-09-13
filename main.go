@@ -22,16 +22,18 @@ func main() {
 	//连接数据库
 	global.DB = core.InitGorm()
 	//fmt.Println(global.DB)
-	//连接redis
-	global.Redis = core.ConnectRedis()
-	// 连接es
-	global.ESClient = core.EsConnect()
 
+	//命令行参数绑定
 	option := flag.Parse()
 	if flag.IsWebStop(option) {
 		flag.SwitchOption(option)
 		return
 	}
+
+	//连接redis
+	global.Redis = core.ConnectRedis()
+	// 连接es
+	global.ESClient = core.EsConnect()
 
 	router := routers.InitRouter()
 

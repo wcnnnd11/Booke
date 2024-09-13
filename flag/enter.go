@@ -1,12 +1,14 @@
 package flag
 
 import (
+	"GVB_server/core"
+	"GVB_server/global"
 	sys_flag "flag"
 	"github.com/fatih/structs"
 )
 
 type Option struct {
-	DB   bool
+	DB   bool   //-db
 	User string //-u admin -u user
 	ES   string //-es create -es delete
 
@@ -55,6 +57,8 @@ func SwitchOption(option Option) {
 		return
 	}
 	if option.ES == "create" {
+		// 连接es
+		global.ESClient = core.EsConnect()
 		EsCreateIndex()
 	}
 
