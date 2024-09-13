@@ -17,7 +17,7 @@ system:
   port: 8080
   env: release
 upload:
-  size: 2
+  size: 5
   path: uploads/file/
 site_info:
   created_at: "2024-07-10"

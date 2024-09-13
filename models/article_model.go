@@ -168,19 +168,19 @@ func (a ArticleModel) RemoveIndex() error {
 	return nil
 }
 
-//// Create 添加的方法
-//func (a *ArticleModel) Create() (err error) {
-//	indexResponse, err := global.ESClient.Index().
-//		Index(a.Index()).
-//		BodyJson(a).Do(context.Background())
-//	if err != nil {
-//		logrus.Error(err.Error())
-//		return err
-//	}
-//	a.ID = indexResponse.Id
-//	return nil
-//}
-//
+// Create 添加的方法
+func (a *ArticleModel) Create() (err error) {
+	indexResponse, err := global.ESClient.Index().
+		Index(a.Index()).
+		BodyJson(a).Do(context.Background())
+	if err != nil {
+		logrus.Error(err.Error())
+		return err
+	}
+	a.ID = indexResponse.Id
+	return nil
+}
+
 //// ISExistData 是否存在该文章
 //func (a ArticleModel) ISExistData() bool {
 //	res, err := global.ESClient.
