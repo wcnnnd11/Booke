@@ -4,6 +4,7 @@ import (
 	"GVB_server/global"
 	"GVB_server/models/ctype"
 	"context"
+	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
 )
 
@@ -181,22 +182,23 @@ func (a *ArticleModel) Create() (err error) {
 	return nil
 }
 
-//// ISExistData 是否存在该文章
-//func (a ArticleModel) ISExistData() bool {
-//	res, err := global.ESClient.
-//		Search(a.Index()).
-//		Query(elastic.NewTermQuery("keyword", a.Title)).
-//		Size(1).
-//		Do(context.Background())
-//	if err != nil {
-//		logrus.Error(err.Error())
-//		return false
-//	}
-//	if res.Hits.TotalHits.Value > 0 {
-//		return true
-//	}
-//	return false
-//}
+// ISExistData 是否存在该文章
+func (a ArticleModel) ISExistData() bool {
+	res, err := global.ESClient.
+		Search(a.Index()).
+		Query(elastic.NewTermQuery("keyword", a.Title)).
+		Size(1).
+		Do(context.Background())
+	if err != nil {
+		logrus.Error(err.Error())
+		return false
+	}
+	if res.Hits.TotalHits.Value > 0 {
+		return true
+	}
+	return false
+}
+
 //func (a *ArticleModel) GetDataByID(id string) error {
 //	res, err := global.ESClient.
 //		Get().

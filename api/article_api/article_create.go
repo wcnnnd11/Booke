@@ -92,10 +92,14 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 		return
 	}
 	now := time.Now().Format("2006-01-02 15:04:05")
+
+	// 判断文章的标题是否存在
+
 	article := models.ArticleModel{
 		CreatedAt:    now,
 		UpdatedAt:    now,
 		Title:        cr.Title,
+		Keyword:      cr.Title,
 		Abstract:     cr.Abstract,
 		Content:      cr.Content,
 		UserID:       userID,
@@ -107,6 +111,11 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 		BannerID:     cr.BannerID,
 		BannerUrl:    bannerUrl,
 		Tags:         cr.Tags,
+	}
+
+	if article.ISExistData() {
+		res.FailWithMessage("文章已存在", c)
+		return
 	}
 
 	err = article.Create()
