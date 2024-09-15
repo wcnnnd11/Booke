@@ -4,6 +4,7 @@ import (
 	"GVB_server/global"
 	"GVB_server/models/ctype"
 	"context"
+	"encoding/json"
 	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
 )
@@ -199,15 +200,15 @@ func (a ArticleModel) ISExistData() bool {
 	return false
 }
 
-//func (a *ArticleModel) GetDataByID(id string) error {
-//	res, err := global.ESClient.
-//		Get().
-//		Index(a.Index()).
-//		Id(id).
-//		Do(context.Background())
-//	if err != nil {
-//		return err
-//	}
-//	err = json.Unmarshal(res.Source, a)
-//	return err
-//}
+func (a *ArticleModel) GetDataByID(id string) error {
+	res, err := global.ESClient.
+		Get().
+		Index(a.Index()).
+		Id(id).
+		Do(context.Background())
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(res.Source, a)
+	return err
+}
