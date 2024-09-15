@@ -37,6 +37,7 @@ func OkWithData(data any, c *gin.Context) {
 	Result(Success, data, "成功", c)
 }
 func OkWithList(list any, count int64, c *gin.Context) {
+
 	OkWithData(ListResponse[any]{
 		List:  list,
 		Count: count,
