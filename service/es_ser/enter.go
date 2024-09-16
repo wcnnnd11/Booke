@@ -3,39 +3,83 @@ package es_ser
 import (
 	"GVB_server/global"
 	"GVB_server/models"
+	"GVB_server/service/redis_ser"
 	"context"
 	"encoding/json"
 	"errors"
 	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
+	"strings"
 )
 
-func CommList(key string, page, limit int) (list []models.ArticleModel, count int, err error) {
+type Option struct {
+	models.PageInfo
+	Fields []string
+	Tag    string
+}
+
+func (o *Option) GetForm() int {
+	if o.Page == 0 {
+		o.Page = 1
+	}
+	if o.Limit == 0 {
+		o.Limit = 10
+	}
+	return (o.Page - 1) * o.Limit
+
+}
+
+func CommList(option Option) (list []models.ArticleModel, count int, err error) {
 	boolSearch := elastic.NewBoolQuery()
-	from := page
-	if key != "" {
+	if option.Key != "" {
 		boolSearch.Must(
-			elastic.NewMatchQuery("title", key),
+			elastic.NewMultiMatchQuery(option.Key, option.Fields...),
 		)
 	}
-	if limit == 0 {
-		limit = 10
+	if option.Tag != "" {
+		boolSearch.Must(
+			elastic.NewMultiMatchQuery(option.Tag, "tags"),
+		)
 	}
-	if from == 0 {
-		from = 1
+
+	type SortField struct {
+		Field     string
+		Ascending bool
 	}
+	sortField := SortField{
+		Field:     "created_at",
+		Ascending: false, // 从小到大  从大到小
+	}
+	if option.Sort != "" {
+		_list := strings.Split(option.Sort, " ")
+		if len(_list) == 2 && _list[1] == "desc" || _list[1] == "asc" {
+			sortField.Field = _list[0]
+			if _list[1] == "desc" {
+				sortField.Ascending = false
+			}
+			if _list[1] == "asc" {
+				sortField.Ascending = true
+			}
+
+		}
+	}
+
 	res, err := global.ESClient.
 		Search(models.ArticleModel{}.Index()).
 		Query(boolSearch).
-		From((from - 1) * limit).
-		Size(limit).
+		Highlight(elastic.NewHighlight().Field("title")).
+		From(option.GetForm()).
+		Sort(sortField.Field, sortField.Ascending).
+		Size(option.Limit).
 		Do(context.Background())
 	if err != nil {
-		logrus.Error(err.Error())
 		return
 	}
 	count = int(res.Hits.TotalHits.Value) //搜索到结果总条数
 	demoList := []models.ArticleModel{}
+
+	diggInfo := redis_ser.GetDiggInfo()
+	lookInfo := redis_ser.GetLookInfo()
 	for _, hit := range res.Hits.Hits {
 		var model models.ArticleModel
 		data, err := hit.Source.MarshalJSON()
@@ -48,7 +92,15 @@ func CommList(key string, page, limit int) (list []models.ArticleModel, count in
 			logrus.Error(err)
 			continue
 		}
+		title, ok := hit.Highlight["title"]
+		if ok {
+			model.Title = title[0]
+		}
 		model.ID = hit.Id
+		digg := diggInfo[hit.Id]
+		look := lookInfo[hit.Id]
+		model.DiggCount = model.DiggCount + digg
+		model.LookCount = model.LookCount + look
 		demoList = append(demoList, model)
 	}
 	return demoList, count, err
@@ -68,6 +120,7 @@ func ComDetail(id string) (model models.ArticleModel, err error) {
 		return
 	}
 	model.ID = res.Id
+	model.LookCount = model.LookCount + redis_ser.GetLook(res.Id)
 	return
 }
 
@@ -91,4 +144,14 @@ func CommDetailByKeyword(key string) (model models.ArticleModel, err error) {
 	}
 	model.ID = hit.Id
 	return
+}
+
+func ArticleUpdate(id string, data map[string]any) error {
+	_, err := global.ESClient.
+		Update().
+		Index(models.ArticleModel{}.Index()).
+		Id(id).
+		Doc(data).
+		Do(context.Background())
+	return err
 }

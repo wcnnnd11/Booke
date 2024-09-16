@@ -9,14 +9,23 @@ import (
 	"github.com/liu-cn/json-filter/filter"
 )
 
+type ArticleSearchRequest struct {
+	models.PageInfo
+	Tag string `json:"tag" form:"tag"`
+}
+
 func (ArticleApi) ArticleListView(c *gin.Context) {
-	var cr models.PageInfo
+	var cr ArticleSearchRequest
 	if err := c.ShouldBindQuery(&cr); err != nil {
 		res.FailWithCode(res.ArgumentError, c)
 		return
 	}
 
-	list, count, err := es_ser.CommList(cr.Key, cr.Page, cr.Limit)
+	list, count, err := es_ser.CommList(es_ser.Option{
+		PageInfo: cr.PageInfo,
+		Fields:   []string{"title", "content"},
+		Tag:      cr.Tag,
+	})
 	if err != nil {
 		global.Log.Error(err)
 		res.OkWithMessage("查询失败", c)

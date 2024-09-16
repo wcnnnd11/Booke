@@ -5,6 +5,7 @@ import (
 	"GVB_server/models"
 	"GVB_server/models/ctype"
 	"GVB_server/models/res"
+	"GVB_server/service/es_ser"
 	"context"
 	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
@@ -102,5 +103,12 @@ func (ArticleApi) ArticleUpdateView(c *gin.Context) {
 		res.FailWithMessage("更新失败", c)
 		return
 	}
+	err = es_ser.ArticleUpdate(cr.ID, maps)
+	if err != nil {
+		global.Log.Error(err)
+		res.FailWithMessage("文章更新失败", c)
+		return
+	}
+
 	res.OkWithMessage("更新成功", c)
 }

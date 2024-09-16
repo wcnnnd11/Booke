@@ -3,6 +3,7 @@ package api
 import (
 	"GVB_server/api/advert_api"
 	"GVB_server/api/article_api"
+	"GVB_server/api/digg_api"
 	"GVB_server/api/images_api"
 	"GVB_server/api/menu_api"
 	"GVB_server/api/message_api"
@@ -20,6 +21,7 @@ type ApiGroup struct {
 	TagApi      tag_api.TagApi
 	MessageApi  message_api.MessageApi
 	ArticleApi  article_api.ArticleApi
+	DiggApi     digg_api.DiggApi
 }
 
 var ApiGroupApp = new(ApiGroup)

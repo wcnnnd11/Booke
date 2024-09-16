@@ -1,22 +1,21 @@
 package article_api
 
 import (
+	"GVB_server/models"
 	"GVB_server/models/res"
 	"GVB_server/service/es_ser"
+	"GVB_server/service/redis_ser"
 	"github.com/gin-gonic/gin"
 )
 
-type ESIDRequest struct {
-	ID string `json:"id" form:"id" uri:"id"`
-}
-
 func (ArticleApi) ArticleDetailView(c *gin.Context) {
-	var cr ESIDRequest
+	var cr models.ESIDRequest
 	err := c.ShouldBindUri(&cr)
 	if err != nil {
 		res.FailWithCode(res.ArgumentError, c)
 		return
 	}
+	redis_ser.Look(cr.ID)
 	model, err := es_ser.ComDetail(cr.ID)
 	if err != nil {
 		res.FailWithMessage(err.Error(), c)
