@@ -4,6 +4,7 @@ import (
 	"GVB_server/global"
 	"GVB_server/models"
 	"GVB_server/models/res"
+	"GVB_server/service/es_ser"
 	"GVB_server/utils/jwts"
 	md "github.com/JohannesKaufmann/html-to-markdown"
 	"github.com/PuerkitoBio/goquery"
@@ -123,6 +124,7 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 		res.FailWithMessage(err.Error(), c)
 		return
 	}
+	go es_ser.AsyncArticleByFullText(article.ID, article.Title, article.Content)
 	res.OkWithMessage("文章发布成功", c)
 
 }
