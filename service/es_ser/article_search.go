@@ -61,16 +61,11 @@ func CommList(option Option) (list []models.ArticleModel, count int, err error) 
 	count = int(res.Hits.TotalHits.Value) //搜索到结果总条数
 	demoList := []models.ArticleModel{}
 
-	diggInfo := redis_ser.GetDiggInfo()
-	lookInfo := redis_ser.GetLookInfo()
+	diggInfo := redis_ser.NewDigg().GetInfo()
+	lookInfo := redis_ser.NewArticleLook().GetInfo()
 	for _, hit := range res.Hits.Hits {
 		var model models.ArticleModel
-		data, err := hit.Source.MarshalJSON()
-		if err != nil {
-			logrus.Error(err.Error())
-			continue
-		}
-		err = json.Unmarshal(data, &model)
+		err = json.Unmarshal(hit.Source, &model)
 		if err != nil {
 			logrus.Error(err)
 			continue
@@ -103,7 +98,7 @@ func ComDetail(id string) (model models.ArticleModel, err error) {
 		return
 	}
 	model.ID = res.Id
-	model.LookCount = model.LookCount + redis_ser.GetLook(res.Id)
+	model.LookCount = model.LookCount + redis_ser.NewArticleLook().Get(res.Id)
 	return
 }
 

@@ -16,7 +16,6 @@ func (DiggApi) DiggArticleView(c *gin.Context) {
 	}
 	// 对长度校验
 	// 查es
-
-	redis_ser.Digg(cr.ID)
+	redis_ser.NewDigg().Set(cr.ID)
 	res.OkWithMessage("文章点赞成功", c)
 }

@@ -15,9 +15,11 @@ func main() {
 
 	global.Redis = core.ConnectRedis()
 
-	redis_ser.Digg("VXEA9JEBKWTZixGuebWs")
-	fmt.Println(redis_ser.GetDigg("VXEA9JEBKWTZixGuebWs"))
+	digg := redis_ser.NewDigg()
+	digg.Set("VXEA9JEBKWTZixGuebWs")
+	//redis_ser.Digg("VXEA9JEBKWTZixGuebWs")
+	fmt.Println(digg.Get("VXEA9JEBKWTZixGuebWs"))
 
-	fmt.Println(redis_ser.GetDiggInfo())
+	fmt.Println(digg.GetInfo())
 	//redis_ser.DiggClear()
 }
