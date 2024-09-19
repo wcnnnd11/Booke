@@ -4,8 +4,10 @@ import (
 	"GVB_server/global"
 	"GVB_server/models"
 	"GVB_server/models/res"
+	"GVB_server/plugins/log_stash"
 	"GVB_server/utils/jwts"
 	"GVB_server/utils/pwd"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,11 +24,14 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 		return
 	}
 
+	log := log_stash.NewLogByGin(c)
+
 	var userModel models.UserModel
 	err = global.DB.Take(&userModel, "user_name=? or email=?", cr.UserName, cr.UserName).Error
 	if err != nil {
 		//没找到
 		global.Log.Warn("用户名不存在")
+		log.Warn(fmt.Sprintf("%s 用户名不存在", cr.UserName))
 		res.FailWithMessage("用户名或密码错误", c)
 		return
 	}
@@ -34,6 +39,7 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 	isCheck := pwd.CheckPwd(userModel.Password, cr.Password)
 	if !isCheck {
 		global.Log.Warn("用户名密码错误")
+		log.Warn(fmt.Sprintf("用户名密码错误 %s %s", cr.UserName, cr.Password))
 		res.FailWithMessage("用户名或密码错误", c)
 		return
 	}
@@ -44,9 +50,13 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 		UserID:   userModel.ID,
 	})
 	if err != nil {
-		res.FailWithMessage("tkoen生成失败", c)
+		global.Log.Error(err)
+		log.Error(fmt.Sprintf("token 生成失败 %s", err.Error()))
+		res.FailWithMessage("token生成失败", c)
 		return
 	}
+	log = log_stash.New(c.ClientIP(), token)
+	log.Info("登录成功")
 	res.OkWithData(token, c)
 
 }
