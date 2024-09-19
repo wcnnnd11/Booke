@@ -19,6 +19,15 @@ func (c CountDB) Set(id string) error {
 	return err
 }
 
+// SetCount 在 原有基础上增加多少
+func (c CountDB) SetCount(id string, num int) error {
+
+	oldnNum, _ := global.Redis.HGet(c.Index, id).Int()
+	newNum := oldnNum + num
+	err := global.Redis.HSet(c.Index, id, newNum).Err()
+	return err
+}
+
 // Get 获取某个的数据
 func (c CountDB) Get(id string) int {
 	num, _ := global.Redis.HGet(c.Index, id).Int()

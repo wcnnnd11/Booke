@@ -4,6 +4,8 @@ import (
 	"GVB_server/global"
 	"GVB_server/models"
 	"GVB_server/models/res"
+	"GVB_server/service/redis_ser"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/liu-cn/json-filter/filter"
 )
@@ -28,11 +30,19 @@ func (CommentApi) CommentListView(c *gin.Context) {
 func FindArticleCommentList(articleID string) (RootCommentList []*models.CommentModel) {
 	// 先把文章下的根评论查出来
 	global.DB.Preload("User").Find(&RootCommentList, "article_id = ? and parent_comment_id is null", articleID)
-	// 遍历根评论，查根评论下的所有子评论
+	// 遍历根评论，递归查根评论下的所有子评论
+	diggInfo := redis_ser.NewCommentDigg().GetInfo()
 	for _, model := range RootCommentList {
-		var subCommentList []models.CommentModel
+		var subCommentList, newSubCommentList []models.CommentModel
 		FindSubComment(*model, &subCommentList)
-		model.SubComments = subCommentList
+		for _, commentModel := range subCommentList {
+			digg := diggInfo[fmt.Sprintf("%d", commentModel.ID)]
+			commentModel.DiggCount = commentModel.DiggCount + digg
+			newSubCommentList = append(newSubCommentList, commentModel)
+		}
+		modelDigg := diggInfo[fmt.Sprintf("%d", model.ID)]
+		model.DiggCount = model.DiggCount + modelDigg
+		model.SubComments = newSubCommentList
 	}
 	return
 }
@@ -45,5 +55,18 @@ func FindSubComment(model models.CommentModel, subCommentList *[]models.CommentM
 		FindSubComment(sub, subCommentList)
 	}
 	return
+}
 
+func FindSubCommentCount(model models.CommentModel) (subCommentList []models.CommentModel) {
+	FindSubCommentList(model, &subCommentList)
+	return subCommentList
+}
+
+func FindSubCommentList(model models.CommentModel, subCommentList *[]models.CommentModel) {
+	global.DB.Preload("SubComments").Take(&model)
+	for _, sub := range model.SubComments {
+		*subCommentList = append(*subCommentList, sub)
+		FindSubComment(sub, subCommentList)
+	}
+	return
 }
