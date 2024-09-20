@@ -17,6 +17,13 @@ type TagsResponse struct {
 	CreateAt      string   `json:"create_at"`
 }
 
+// TagsType 标签名称列表
+// @Tags 标签管理
+// @Summary 标签名称列表
+// @Description 标签名称列表
+// @Router /api/tag_names [get]
+// @Produce json
+// @Success 200 {object} res.Response{data=[]TagResponse}
 type TagsType struct {
 	DocCountErrorUpperBound int `json:"doc_count_error_upper_bound"`
 	SumOtherDocCount        int `json:"sum_other_doc_count"`

@@ -5,6 +5,7 @@ import (
 	"GVB_server/models"
 	"GVB_server/models/ctype"
 	"GVB_server/models/res"
+	"GVB_server/utils"
 	"encoding/json"
 	"fmt"
 	"github.com/DanPlayer/randomname"
@@ -187,6 +188,7 @@ func SendMsg(_addr string, response GroupResponse) {
 
 func getIPAndAddr(_addr string) (ip string, addr string) {
 	addrList := strings.Split(_addr, ":")
-	addr = "内网"
+	ip = addrList[0]
+	addr = utils.GetAddr(ip)
 	return addrList[0], addr
 }

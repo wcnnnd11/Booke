@@ -10,7 +10,6 @@ import (
 	"os"
 )
 
-// ImageUploadView 上传单个图片，返回图片的url
 func (ImagesApi) ImageUploadView(c *gin.Context) {
 	// 上传多个图片
 	form, err := c.MultipartForm()

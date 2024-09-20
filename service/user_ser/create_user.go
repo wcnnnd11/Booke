@@ -4,6 +4,7 @@ import (
 	"GVB_server/global"
 	"GVB_server/models"
 	"GVB_server/models/ctype"
+	"GVB_server/utils"
 	"GVB_server/utils/pwd"
 	"errors"
 )
@@ -25,6 +26,7 @@ func (UserService) CreateUser(userName, nickName, password string, role ctype.Ro
 	// 头像问题
 	// 1. 默认头像
 	// 2. 随机选择头像
+	addr := utils.GetAddr(ip)
 
 	// 入库
 	err = global.DB.Create(&models.UserModel{
@@ -34,7 +36,7 @@ func (UserService) CreateUser(userName, nickName, password string, role ctype.Ro
 		Email:      email,
 		Role:       role,
 		Avatar:     Avatar,
-		IP:         ip,
+		IP:         addr,
 		Addr:       "内网地址",
 		SignStatus: ctype.SignEmail,
 	}).Error

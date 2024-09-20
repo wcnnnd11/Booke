@@ -6,6 +6,7 @@ import (
 	"GVB_server/flag"
 	"GVB_server/global"
 	"GVB_server/routers"
+	"GVB_server/utils"
 )
 
 // @title gvb_API文档
@@ -21,7 +22,8 @@ func main() {
 	global.Log = core.InitLogger()
 	//连接数据库
 	global.DB = core.InitGorm()
-	//fmt.Println(global.DB)
+	core.InitAddrDB()
+	defer global.AddrDB.Close()
 
 	//命令行参数绑定
 	option := flag.Parse()
@@ -29,16 +31,14 @@ func main() {
 		flag.SwitchOption(option)
 		return
 	}
-
 	//连接redis
 	global.Redis = core.ConnectRedis()
 	// 连接es
 	global.ESClient = core.EsConnect()
 
 	router := routers.InitRouter()
-
 	addr := global.Config.System.Addr()
-	global.Log.Info("程序GVB_server运行在:", addr)
+	utils.PrintSystem()
 	err := router.Run(addr)
 	if err != nil {
 		global.Log.Fatalf(err.Error())

@@ -25,7 +25,7 @@ func (MenuApi) MenuListView(c *gin.Context) {
 	// 查连接表
 	var menuBanners []models.MenuBannerModel
 	global.DB.Preload("BannerModel").Order("sort desc").Find(&menuBanners, "menu_id in ?", menuIDList)
-	var menus []MenuResponse
+	var menus = make([]MenuResponse, 0)
 	for _, model := range menuList {
 		// model就是一个菜单
 		//解决null值问题
