@@ -21,25 +21,25 @@ upload:
   path: uploads/file/
 site_info:
   created_at: "2024-07-10"
-  bei_an: 暂时无
+  bei_an: 苏ICP备2024135369号-1
   title: 璃江的个人博客
   qq_image: 暂时无
   version: "7.0"
   email: 2215943316@qq.com
   wechat_image: 暂时无
-  name: 江川之息
-  job: 在读学生
-  addr: 江苏镇江/浙江温州
-  slogan: 江川之息
-  slogan_en: JiangChuanZhiXi
-  web: 暂时无
+  name: 博书-booke
+  job: 全栈开发
+  addr: 江苏镇江
+  slogan: 博书
+  slogan_en: BOOKE
+  web: https://www.booke.cloud/
   bilibili_url: 暂时无
   gitee_url: 暂时无
   github_url: 暂时无
 qq:
   app_id: 101974593
   key: kQsBICtPgiV3QZYJ
-  redirect: http://blog.fengfengzhidao.com/login?flag=qq
+  redirect:
 qi_niu:
   enable: true
   access_key: zvKeZtDSUe5I_DtXF7yXobhV4JSiPSg5SjSqy1-s

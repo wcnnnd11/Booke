@@ -11,6 +11,7 @@ import (
 	"GVB_server/api/log_api"
 	"GVB_server/api/menu_api"
 	"GVB_server/api/message_api"
+	"GVB_server/api/role_api"
 	"GVB_server/api/settings_api"
 	"GVB_server/api/tag_api"
 	"GVB_server/api/user_api"
@@ -30,6 +31,7 @@ type ApiGroup struct {
 	ChatApi     chat_api.ChatApi
 	LogApi      log_api.LogApi
 	DataApi     data_api.DataApi
+	RoleApi     role_api.RoleApi
 }
 
 var ApiGroupApp = new(ApiGroup)

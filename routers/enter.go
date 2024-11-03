@@ -16,6 +16,9 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 	router.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 
+	// 配置静态路由
+	router.Static("/uploads", "./uploads")
+
 	// 路由分组
 	apiRouterGroup := router.Group("api")
 
@@ -35,5 +38,6 @@ func InitRouter() *gin.Engine {
 	routerGroupApp.ChatRouter()
 	routerGroupApp.LogRouter()
 	routerGroupApp.DataRouter()
+	routerGroupApp.RoleRouter()
 	return router
 }

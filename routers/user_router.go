@@ -16,6 +16,7 @@ func (router RouterGroup) UserRouter() {
 	router.POST("login", app.QQLoginView)
 	router.POST("users", middleware.JwtAuth(), app.UserCreateView)
 	router.GET("users", middleware.JwtAuth(), app.UserListView)
+	router.GET("user/detail", middleware.JwtAuth(), app.UserDetailView)
 	router.PUT("user_role", middleware.JwtAdmin(), app.UserUpdateRoleView)
 	router.PUT("user_password", middleware.JwtAuth(), app.UserUpdatePassword)
 	router.POST("logout", middleware.JwtAuth(), app.LogoutView)
