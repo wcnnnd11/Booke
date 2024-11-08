@@ -8,6 +8,7 @@ import (
 	"GVB_server/utils/desens"
 	"GVB_server/utils/jwts"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 func (UserApi) UserListView(c *gin.Context) {
@@ -35,6 +36,7 @@ func (UserApi) UserListView(c *gin.Context) {
 		users = append(users, user)
 
 	}
+	time.Sleep(1 * time.Second)
 
 	res.OkWithList(users, count, c)
 
