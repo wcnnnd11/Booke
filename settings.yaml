@@ -41,7 +41,7 @@ qq:
   key: kQsBICtPgiV3QZYJ
   redirect:
 qi_niu:
-  enable: true
+  enable: false
   access_key: zvKeZtDSUe5I_DtXF7yXobhV4JSiPSg5SjSqy1-s
   secret_key: T_YOBjVIme0iXqrvZzjhE3NqFBwGHxqzT3aVdyMd
   bucket: lij1ang

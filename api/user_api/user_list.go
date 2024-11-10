@@ -23,6 +23,7 @@ func (UserApi) UserListView(c *gin.Context) {
 	var users []models.UserModel
 	list, count, _ := common.ComList(models.UserModel{}, common.Option{
 		PageInfo: page,
+		Likes:    []string{"nick_name", "user_name"},
 	})
 	for _, user := range list {
 

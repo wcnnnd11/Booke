@@ -9,5 +9,5 @@ func (router RouterGroup) MenuRouter() {
 	router.GET("menus_names", app.MenuNameListView)
 	router.GET("menus/:id", app.MenuDetailView)
 	router.PUT("menus/:id", app.MenuUpdateView)
-	router.DELETE("menus/:id", app.MenuRemoveView)
+	router.DELETE("menus", app.MenuRemoveView)
 }

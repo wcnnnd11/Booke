@@ -41,6 +41,49 @@ definitions:
         description: 图片路径
         type: string
     type: object
+  menu_api.Banner:
+    properties:
+      id:
+        type: integer
+      path:
+        type: string
+    type: object
+  menu_api.MenuResponse:
+    properties:
+      abstract:
+        description: 简介
+        items:
+          type: string
+        type: array
+      abstract_time:
+        description: 简介的切换时间
+        type: integer
+      banner_time:
+        description: 菜单图片的切换时间 为 0 表示不切换
+        type: integer
+      banners:
+        items:
+          $ref: '#/definitions/menu_api.Banner'
+        type: array
+      created_at:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      path:
+        description: 路径
+        type: string
+      slogan:
+        description: slogan
+        type: string
+      sort:
+        description: 菜单的顺序
+        type: integer
+      title:
+        description: 标题
+        type: string
+    type: object
   models.AdvertModel:
     properties:
       created_at:
@@ -91,6 +134,13 @@ definitions:
           type: integer
         type: array
     type: object
+  res.ListResponse-menu_api_MenuResponse:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/menu_api.MenuResponse'
+    type: object
   res.ListResponse-models_AdvertModel:
     properties:
       count:
@@ -111,6 +161,11 @@ definitions:
         type: integer
       data: {}
       msg:
+        type: string
+    type: object
+  user_api.UserDetailRequest:
+    properties:
+      id:
         type: string
     type: object
 host: 127.0.0.01:8080
@@ -270,4 +325,47 @@ paths:
       summary: 图片名称列表
       tags:
       - 图片管理
+  /api/menus:
+    get:
+      description: 菜单列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-menu_api_MenuResponse'
+              type: object
+      summary: 菜单列表
+      tags:
+      - 菜单管理
+  /api/user_detail:
+    get:
+      description: 通过id展示用户信息
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户id
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_api.UserDetailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 通过id展示用户信息
+      tags:
+      - 用户管理
 swagger: "2.0"
