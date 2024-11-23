@@ -8,6 +8,8 @@ require (
 	github.com/DanPlayer/randomname v1.0.1
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
 	github.com/PuerkitoBio/goquery v1.10.0
+	github.com/cc14514/go-geoip2 v0.0.0-20190105051856-0a1854480a11
+	github.com/cc14514/go-geoip2-db v0.0.0-20190106063142-7b6408a9812a
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	github.com/fatih/structs v1.1.0
 	github.com/gin-contrib/sessions v1.0.1
@@ -37,8 +39,6 @@ require (
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/bytedance/sonic v1.11.9 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
-	github.com/cc14514/go-geoip2 v0.0.0-20190105051856-0a1854480a11 // indirect
-	github.com/cc14514/go-geoip2-db v0.0.0-20190106063142-7b6408a9812a // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.4 // indirect
@@ -72,7 +72,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rakyll/statik v0.1.7 // indirect
-	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect

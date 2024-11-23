@@ -24,13 +24,21 @@ func (SettingsApi) SettingsInfoView(c *gin.Context) {
 	case "site":
 		res.OkWithData(global.Config.SiteInfo, c)
 	case "email":
-		res.OkWithData(global.Config.Email, c)
+		emailInfo := global.Config.Email
+		emailInfo.Password = "******"
+		res.OkWithData(emailInfo, c)
 	case "qq":
-		res.OkWithData(global.Config.QQ, c)
+		qq := global.Config.QQ
+		qq.Key = "******"
+		res.OkWithData(qq, c)
 	case "qiniu":
-		res.OkWithData(global.Config.QiNiu, c)
+		qiniu := global.Config.QiNiu
+		qiniu.SecretKey = "******"
+		res.OkWithData(qiniu, c)
 	case "jwt":
-		res.OkWithData(global.Config.Jwt, c)
+		jwt := global.Config.Jwt
+		jwt.Secret = "******"
+		res.OkWithData(jwt, c)
 	default:
 		res.FailWithMessage("没有对应的配置信息", c)
 	}

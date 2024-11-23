@@ -9,8 +9,10 @@ import (
 
 type Option struct {
 	models.PageInfo
+
 	Debug bool
 	Likes []string // 模糊匹配的字段
+	Where *gorm.DB
 }
 
 func ComList[T any](model T, option Option) (list []T, count int64, err error) {

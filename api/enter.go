@@ -9,6 +9,7 @@ import (
 	"GVB_server/api/digg_api"
 	"GVB_server/api/images_api"
 	"GVB_server/api/log_api"
+	"GVB_server/api/log_v2_api"
 	"GVB_server/api/menu_api"
 	"GVB_server/api/message_api"
 	"GVB_server/api/role_api"
@@ -30,6 +31,7 @@ type ApiGroup struct {
 	CommentApi  comment_api.CommentApi
 	ChatApi     chat_api.ChatApi
 	LogApi      log_api.LogApi
+	LogV2Api    log_v2_api.LogApi
 	DataApi     data_api.DataApi
 	RoleApi     role_api.RoleApi
 }
