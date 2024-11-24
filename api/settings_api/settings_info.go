@@ -39,6 +39,8 @@ func (SettingsApi) SettingsInfoView(c *gin.Context) {
 		jwt := global.Config.Jwt
 		jwt.Secret = "******"
 		res.OkWithData(jwt, c)
+	case "chat_group":
+		res.OkWithData(global.Config.ChatGroup, c)
 	default:
 		res.FailWithMessage("没有对应的配置信息", c)
 	}

@@ -63,6 +63,15 @@ func (SettingsApi) SettingsInfoUpdateView(c *gin.Context) {
 		}
 		global.Config.Jwt = info
 
+	case "chat_group":
+		var info config.ChatGroup
+		err = c.ShouldBindJSON(&info)
+		if err != nil {
+			res.FailWithCode(res.ArgumentError, c)
+			return
+		}
+		global.Config.ChatGroup = info
+
 	default:
 		res.FailWithMessage("没有对应的配置信息", c)
 	}
