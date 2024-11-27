@@ -24,7 +24,7 @@ type MessageUserListResponse struct {
 // @Tags 消息管理
 // @Summary 有消息的用户列表
 // @Description 有消息的用户列表
-// @Router /api/message_users [get]
+// @Router /api/messages_users [get]
 // @Param token header string  true  "token"
 // @Param data query MessageUserListRequest   false  "查询参数"
 // @Produce json
@@ -53,6 +53,7 @@ func (MessageApi) MessageUserListView(c *gin.Context) {
 	for _, r := range _list {
 		userMessageMap[r.SendUserID] = r.Count
 	}
+
 	var userIDList []uint
 	for uid, _ := range userMessageMap {
 		userIDList = append(userIDList, uid)

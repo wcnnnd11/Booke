@@ -35,7 +35,7 @@ site_info:
   github_url: https://github.com/wcnnnd11
 upload:
   size: 5
-  path: uploads/file/
+  path: http://127.0.0.1:8080/uploads/file/
 qq:
   app_id: "101974593"
   key: kQsBICtPgiV3QZYJ
@@ -44,7 +44,7 @@ qi_niu:
   enable: false
   access_key: zvKeZtDSUe5I_DtXF7yXobhV4JSiPSg5SjSqy1-s
   secret_key: '******'
-  bucket: lij1ang
+  bucket: "11"
   cdn: http://sggm2o2yh.hd-bkt.clouddn.com/
   zone: z0
   prefix: gvb
@@ -52,15 +52,15 @@ qi_niu:
 email:
   host: smtp.qq.com
   port: 465
-  user: 2215943316@qq.com
-  password: "123456"
+  user: 11@qq.com
+  password: '******'
   default_from_email: 江川之息
   use_ssl: true
   user_tls: false
 jwt:
-  secret: xxx
+  secret: '******'
   expires: 48
-  issuer: xx
+  issuer: "12"
 redis:
   ip: 127.0.0.1
   port: 6379
@@ -71,3 +71,13 @@ es:
   port: 9200
   user: ""
   password: ""
+chat_group:
+  isAnonymous: false
+  isShowTime: false
+  defaultLimit: 0
+  contentLength: 0
+  welcomeTitle: ""
+  isOnlinePeople: false
+  isSendImage: false
+  isSendFile: false
+  isMd: false

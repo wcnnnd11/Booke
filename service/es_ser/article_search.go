@@ -136,3 +136,28 @@ func ArticleUpdate(id string, data map[string]any) error {
 		Do(context.Background())
 	return err
 }
+
+func CommDetailByID(id string) (content string, err error) {
+	// 使用 Elasticsearch 客户端根据 ID 获取文章详情
+	res, err := global.ESClient.
+		Get().
+		Index(models.ArticleModel{}.Index()). // 指定索引
+		Id(id).                               // 指定文章 ID
+		Do(context.Background())
+	if err != nil {
+		if elastic.IsNotFound(err) {
+			return "", errors.New("文章不存在")
+		}
+		return "", err
+	}
+
+	// 将 Elasticsearch 返回的文档解析为模型
+	var model models.ArticleModel
+	err = json.Unmarshal(res.Source, &model)
+	if err != nil {
+		return "", err
+	}
+
+	// 返回文章内容
+	return model.Content, nil
+}

@@ -76,7 +76,9 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 		Addr:      addr,
 		LoginType: ctype.SignEmail,
 	})
-	log_stash_v2.NewSuccessLogin(c) // 调用登录成功日志方法
+
+	// 会不定时出现token传回为空的问题
+	//log_stash_v2.NewSuccessLogin(c) // 调用登录成功日志方法
 
 	res.OkWithData(token, c)
 }
