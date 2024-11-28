@@ -18,17 +18,16 @@ type ArticleContentRequest struct {
 func (ArticleApi) ArticleContentByIdView(c *gin.Context) {
 	var cr ArticleContentRequest
 	// 绑定查询参数
-	err := c.ShouldBindQuery(&cr)
-	if err != nil {
+	if err := c.ShouldBindQuery(&cr); err != nil {
 		res.FailWithCode(res.ArgumentError, c)
 		return
 	}
 
-	// 根据 ID 获取文章详情
-	model, err := es_ser.ComDetail(cr.ID)
+	// 使用新方法根据 ID 获取文章内容
+	content, err := es_ser.CommDetailByID(cr.ID)
 	if err != nil {
 		if err.Error() == "文章不存在" {
-			res.FailWithCode(res.Error, c) // 返回自定义 NotFound 错误码
+			res.FailWithCode(res.Error, c)
 			return
 		}
 		res.FailWithMessage(err.Error(), c)
@@ -36,8 +35,7 @@ func (ArticleApi) ArticleContentByIdView(c *gin.Context) {
 	}
 
 	// 返回文章内容
-	response := ArticleContentResponse{
-		Content: model.Content,
-	}
-	res.OkWithData(response, c)
+	res.OkWithData(ArticleContentResponse{
+		Content: content,
+	}, c)
 }

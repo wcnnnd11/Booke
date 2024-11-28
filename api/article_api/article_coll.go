@@ -6,10 +6,10 @@ import (
 	"GVB_server/models/res"
 	"GVB_server/service/es_ser"
 	"GVB_server/utils/jwts"
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
+// ArticleCollCreateView 用户收藏文章，或取消收藏
 // ArticleCollCreateView 用户收藏文章，或取消收藏
 func (ArticleApi) ArticleCollCreateView(c *gin.Context) {
 	var cr models.ESIDRequest
@@ -21,7 +21,7 @@ func (ArticleApi) ArticleCollCreateView(c *gin.Context) {
 	_claims, _ := c.Get("claims")
 	claims := _claims.(*jwts.CustomClaims)
 
-	model, err := es_ser.ComDetail(cr.ID)
+	model, err := es_ser.CommDetail(cr.ID)
 	if err != nil {
 		res.FailWithMessage("文章不存在", c)
 		return
@@ -41,7 +41,6 @@ func (ArticleApi) ArticleCollCreateView(c *gin.Context) {
 	}
 	// 取消收藏
 	// 文章数 -1
-	fmt.Println(num)
 	global.DB.Delete(&coll)
 
 	// 更新文章收藏数
