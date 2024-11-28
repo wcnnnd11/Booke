@@ -15,7 +15,7 @@ type MessageRequest struct {
 
 // MessageCreateView 发布消息
 func (MessageApi) MessageCreateView(c *gin.Context) {
-	// 当前用户发送消息
+	// 当前用户发布消息
 	// SendUserID 就是当前登录人的id
 	var cr MessageRequest
 	err := c.ShouldBindJSON(&cr)
@@ -23,8 +23,8 @@ func (MessageApi) MessageCreateView(c *gin.Context) {
 		res.FailWithError(err, &cr, c)
 		return
 	}
-
 	var senUser, recvUser models.UserModel
+
 	err = global.DB.Take(&senUser, cr.SendUserID).Error
 	if err != nil {
 		res.FailWithMessage("发送人不存在", c)
@@ -35,6 +35,7 @@ func (MessageApi) MessageCreateView(c *gin.Context) {
 		res.FailWithMessage("接收人不存在", c)
 		return
 	}
+
 	err = global.DB.Create(&models.MessageModel{
 		SendUserID:       cr.SendUserID,
 		SendUserNickName: senUser.NickName,
@@ -51,4 +52,5 @@ func (MessageApi) MessageCreateView(c *gin.Context) {
 		return
 	}
 	res.OkWithMessage("消息发送成功", c)
+	return
 }
