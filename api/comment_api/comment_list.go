@@ -11,20 +11,36 @@ import (
 )
 
 type CommentListRequest struct {
-	ArticleID string `form:"article_id"`
+	ArticleID string `form:"id" uri:"id" json:"id"`
 }
 
+// CommentListView 文章下的评论列表
+// @Tags 评论管理
+// @Summary 文章下的评论列表
+// @Description 文章下的评论列表
+// @Param id path string  true  "id"
+// @Router /api/comments/{id} [get]
+// @Produce json
+// @Success 200 {object} res.Response{data=[]models.CommentModel}
 func (CommentApi) CommentListView(c *gin.Context) {
 	var cr CommentListRequest
-	err := c.ShouldBindQuery(&cr)
+	err := c.ShouldBindUri(&cr)
 	if err != nil {
 		res.FailWithError(err, &cr, c)
 		return
 	}
 	rootCommentList := FindArticleCommentList(cr.ArticleID)
-	res.OkWithData(filter.Select("c", rootCommentList), c)
-	return
 
+	data := filter.Select("c", rootCommentList)
+	_list, _ := data.(filter.Filter)
+	if string(_list.MustMarshalJSON()) == "{}" {
+		list := make([]models.CommentModel, 0)
+		res.OkWithList(list, 0, c)
+		return
+	}
+
+	res.OkWithList(data, int64(len(rootCommentList)), c)
+	return
 }
 
 func FindArticleCommentList(articleID string) (RootCommentList []*models.CommentModel) {
@@ -33,40 +49,9 @@ func FindArticleCommentList(articleID string) (RootCommentList []*models.Comment
 	// 遍历根评论，递归查根评论下的所有子评论
 	diggInfo := redis_ser.NewCommentDigg().GetInfo()
 	for _, model := range RootCommentList {
-		var subCommentList, newSubCommentList []models.CommentModel
-		FindSubComment(*model, &subCommentList)
-		for _, commentModel := range subCommentList {
-			digg := diggInfo[fmt.Sprintf("%d", commentModel.ID)]
-			commentModel.DiggCount = commentModel.DiggCount + digg
-			newSubCommentList = append(newSubCommentList, commentModel)
-		}
 		modelDigg := diggInfo[fmt.Sprintf("%d", model.ID)]
 		model.DiggCount = model.DiggCount + modelDigg
-		model.SubComments = newSubCommentList
-	}
-	return
-}
-
-// FindSubComment 递归查评论下的子评论
-func FindSubComment(model models.CommentModel, subCommentList *[]models.CommentModel) {
-	global.DB.Preload("SubComments.User").Take(&model)
-	for _, sub := range model.SubComments {
-		*subCommentList = append(*subCommentList, sub)
-		FindSubComment(sub, subCommentList)
-	}
-	return
-}
-
-func FindSubCommentCount(model models.CommentModel) (subCommentList []models.CommentModel) {
-	FindSubCommentList(model, &subCommentList)
-	return subCommentList
-}
-
-func FindSubCommentList(model models.CommentModel, subCommentList *[]models.CommentModel) {
-	global.DB.Preload("SubComments").Take(&model)
-	for _, sub := range model.SubComments {
-		*subCommentList = append(*subCommentList, sub)
-		FindSubComment(sub, subCommentList)
+		models.GetCommentTree(model)
 	}
 	return
 }

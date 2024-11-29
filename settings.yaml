@@ -24,7 +24,7 @@ site_info:
   version: "7.0"
   email: 2215943316@qq.com
   wechat_image: http://127.0.0.1:8080/uploads/file/微信二维码.jpg
-  name: 博书-booke
+  name: Booke-博书
   job: 全栈开发
   addr: 江苏镇江
   slogan: 博书
@@ -35,8 +35,7 @@ site_info:
   github_url: https://github.com/wcnnnd11
 upload:
   size: 5
-  path: http://127.0.0.1:8080/uploads/file/
-qq:
+  path: uploads/file
   app_id: "101974593"
   key: kQsBICtPgiV3QZYJ
   redirect: ""
@@ -54,7 +53,7 @@ email:
   port: 465
   user: 11@qq.com
   password: '******'
-  default_from_email: 江川之息
+  default_from_email: Booke-博书
   use_ssl: true
   user_tls: false
 jwt:

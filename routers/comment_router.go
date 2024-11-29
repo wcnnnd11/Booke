@@ -12,4 +12,6 @@ func (router RouterGroup) CommentRouter() {
 	router.GET("comments/:id", app.CommentDiggView)
 	router.DELETE("comments/:id", app.CommentRemoveView)
 
+	router.GET("comments/articles", app.CommentByArticleListView)
+
 }

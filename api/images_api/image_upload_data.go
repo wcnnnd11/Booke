@@ -56,7 +56,7 @@ func (ImagesApi) ImageUploadDataView(c *gin.Context) {
 	//创建这个文件夹/uploads/file/nick_name
 	dirList, err := os.ReadDir(basePath)
 	if err != nil {
-		res.FailWithMessage("文件目录不存在", c)
+		res.FailWithMessage(fmt.Sprintf("文件目录不存在: %s", basePath), c)
 		return
 	}
 	if !isInDirEntry(dirList, claims.NickName) {
