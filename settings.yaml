@@ -36,8 +36,9 @@ site_info:
 upload:
   size: 5
   path: uploads/file
-  app_id: "101974593"
-  key: kQsBICtPgiV3QZYJ
+qq:
+  app_id: ""
+  key: ""
   redirect: ""
 qi_niu:
   enable: false
@@ -71,12 +72,12 @@ es:
   user: ""
   password: ""
 chat_group:
-  isAnonymous: false
+  isAnonymous: true
   isShowTime: false
-  defaultLimit: 0
+  defaultLimit: 50
   contentLength: 0
-  welcomeTitle: ""
-  isOnlinePeople: false
+  welcomeTitle: 摩尔爆射世界杯
+  isOnlinePeople: true
   isSendImage: false
   isSendFile: false
   isMd: false

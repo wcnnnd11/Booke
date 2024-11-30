@@ -32,7 +32,7 @@ const (
 	VoiceMsg                     // 语音消息
 	VideoMsg                     // 视频消息
 	SystemMsg  ctype.MsgType = 4 // 系统消息
-	OutRoomMsg ctype.MsgType = 5 // 退出聊天室
+	OutRoomMsg ctype.MsgType = 0 // 退出聊天室
 
 )
 
