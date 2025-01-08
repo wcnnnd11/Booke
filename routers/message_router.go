@@ -19,4 +19,6 @@ func (router RouterGroup) MessageRouter() {
 	router.GET("messages_all", app.MessageListAllView)
 	router.GET("messages_record", middleware.JwtAuth(), app.MessageRecordView)
 
+	router.DELETE("messages_users", middleware.JwtAuth(), app.MessageRecordRemoveView)
+
 }

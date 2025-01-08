@@ -74,9 +74,9 @@ es:
 chat_group:
   isAnonymous: true
   isShowTime: false
-  defaultLimit: 50
-  contentLength: 0
-  welcomeTitle: 摩尔爆射世界杯
+  defaultLimit: 100
+  contentLength: 100
+  welcomeTitle: 摩尔庄园dddddd
   isOnlinePeople: true
   isSendImage: false
   isSendFile: false

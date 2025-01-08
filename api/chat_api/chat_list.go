@@ -16,7 +16,7 @@ func (ChatApi) ChatListView(c *gin.Context) {
 		return
 	}
 
-	cr.Sort = "created_at asc"
+	cr.Sort = "created_at desc"
 	list, count, _ := common.ComList(models.ChatModel{IsGroup: true}, common.Option{
 		PageInfo: cr,
 	})
