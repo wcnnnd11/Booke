@@ -6,14 +6,12 @@ import (
 )
 
 // NewSuccessLogin 登录成功的日志
-func NewSuccessLogin(c *gin.Context) {
-	token := c.Request.Header.Get("token")
-	jwyPayLoad := parseToken(token)
-	saveLoginLog("登录成功", "--", jwyPayLoad.UserID, jwyPayLoad.UserName, true, c)
+func NewSuccessLogin(c *gin.Context, userID uint, userName string) {
+	saveLoginLog("登录成功", "--", userID, userName, true, c)
 }
 
 // NewFailLogin 登录失败的日志
-func NewFailLogin(title, userName, pwd string, c *gin.Context) {
+func NewFailLogin(title string, userName string, pwd string, c *gin.Context) {
 	saveLoginLog(title, pwd, 0, userName, false, c)
 }
 

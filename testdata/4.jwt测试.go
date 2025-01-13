@@ -18,6 +18,6 @@ func main() {
 	})
 	fmt.Println(token, err)
 
-	claims, err := jwts.ParseToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpamlhbmciLCJuaWNrX25hbWUiOiJ4eHgiLCJyb2xlIjoxLCJ1c2VyX2lkIjoxLCJleHAiOjE3MjEyOTczNjAuMzA4NDQyOCwiaXNzIjoieHgifQ.Bn98XAyDl7iB-j5xXkJba48BDs5sStHfpqRe61y8wZw")
+	claims, err := jwts.ParseToken("\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IiIsIm5pY2tfbmFtZSI6ImFkbWluIiwicm9sZSI6MSwidXNlcl9pZCI6MSwiYXZhdGFyIjoiIiwiZXhwIjoxNzM2Nzc3NTA0LjExMzY4NywiaXNzIjoiMTIifQ.GAU8GRf_8jM06psPyWuwXu2KLSnHWjNxfDjeRYFw86E")
 	fmt.Println(claims)
 }

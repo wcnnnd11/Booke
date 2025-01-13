@@ -6,6 +6,7 @@ import (
 	"GVB_server/models/ctype"
 	"GVB_server/models/res"
 	"GVB_server/utils/jwts"
+	"fmt"
 	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
 	"strings"
@@ -53,11 +54,11 @@ func (UserApi) UserUpdateNickName(c *gin.Context) {
 	}
 
 	// 如果改的是头像，则判断一下用户的注册来源
+	fmt.Println(newMaps)
 	_, ok := newMaps["avatar"]
 	if ok && userModel.SignStatus != ctype.SignEmail {
 		delete(newMaps, "avatar")
 	}
-
 	err = global.DB.Model(&userModel).Updates(newMaps).Error
 	if err != nil {
 		global.Log.Error(err)

@@ -20,10 +20,10 @@ site_info:
   created_at: "2024-07-10"
   bei_an: 苏ICP备2024135369号-1
   title: 博书-Booke
-  qq_image: http://127.0.0.1:8080/uploads/file/qq二维码.jpg
-  version: "7.0"
+  qq_image: /uploads/file/qq二维码.jpg
+  version: 8.0.1
   email: 2215943316@qq.com
-  wechat_image: http://127.0.0.1:8080/uploads/file/微信二维码.jpg
+  wechat_image: /uploads/file/微信二维码.jpg
   name: Booke-博书
   job: 全栈开发
   addr: 江苏镇江
@@ -37,14 +37,14 @@ upload:
   size: 5
   path: uploads/file
 qq:
-  app_id: ""
-  key: ""
-  redirect: ""
+  app_id: 审核没过，暂时无
+  key: '******'
+  redirect: 审核没过，暂时无
 qi_niu:
   enable: false
   access_key: zvKeZtDSUe5I_DtXF7yXobhV4JSiPSg5SjSqy1-s
   secret_key: '******'
-  bucket: "11"
+  bucket: "111"
   cdn: http://sggm2o2yh.hd-bkt.clouddn.com/
   zone: z0
   prefix: gvb
@@ -76,8 +76,8 @@ chat_group:
   isShowTime: false
   defaultLimit: 100
   contentLength: 100
-  welcomeTitle: 摩尔庄园dddddd
-  isOnlinePeople: true
+  welcomeTitle: 摩尔庄园
+  isOnlinePeople: false
   isSendImage: false
   isSendFile: false
   isMd: false

@@ -18,4 +18,7 @@ type UserModel struct {
 	IP         string           `gorm:"size:20" json:"ip,select(c)"`         // ip地址
 	Role       ctype.Role       `gorm:"size:4;default:1" json:"role"`        // 权限  1 管理员  2 普通用户  3 游客
 	SignStatus ctype.SignStatus `gorm:"type=smallint(6)" json:"sign_status"` // 注册来源
+	Integral   int              `gorm:"size:18" json:"integral"`             // 新增积分字段
+	Sign       string           `gorm:"size:512" json:"sign"`                // 新增签名字段
+	Link       string           `gorm:"size:256" json:"link"`                // 新增跳转链接字段
 }

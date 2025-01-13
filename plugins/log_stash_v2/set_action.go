@@ -169,7 +169,9 @@ func (action *Action) SetResponseContent(response string) {
 
 // SetFlush 保存level不变，更新
 func (action *Action) SetFlush() {
-	action.level = action.model.Level
+	if action.model != nil {
+		action.level = action.model.Level
+	}
 	action.save()
 }
 
