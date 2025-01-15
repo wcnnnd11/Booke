@@ -7,7 +7,7 @@ func (router RouterGroup) MenuRouter() {
 	router.POST("menus", app.MenuCreateView)
 	router.GET("menus", app.MenuListView)
 	router.GET("menus_names", app.MenuNameListView)
-	router.GET("menus/:id", app.MenuDetailView)
+	router.GET("menus/detail/*path", app.MenuDetailView)
 	router.PUT("menus/:id", app.MenuUpdateView)
 	router.DELETE("menus", app.MenuRemoveView)
 }
