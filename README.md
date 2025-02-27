@@ -10,15 +10,9 @@ Booke 是我的第一个项目——个人博客。这个项目旨在提供一�
   - Go
   - Gin 框架
   - Gorm 框架
-  - Blog
   
 - **前端**：
-  - HTML5
-  - CSS
-  - JavaScript (JS)
-  - TypeScript (TS)
   - Vue.js
-  - Python
   
 - **数据库**：
   - MySQL
